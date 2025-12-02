@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Base64 Converter</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+    background-color: #0a0a0a;
+    color: #00ffff;
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+h1 {
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff;
+    margin-bottom: 30px;
+}
+.container {
+    width: 100%;
+    max-width: 900px;
+}
+textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    margin-bottom: 12px;
+    resize: vertical;
+    font-size: 15px;
+    background-color: #111;
+    color: #00ffff;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #00ffff;
+    color: #0a0a0a;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 12px;
+    text-shadow: 0 0 3px #00ffff;
+    font-size: 16px;
+}
+button:hover {
+    background: #00cccc;
+}
+label {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+}
+.output {
+    background-color: #111;
+    color: #00ffff;
+    padding: 12px;
+    border-radius: 12px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    min-height: 120px;
+    font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<h1><i class="fas fa-bolt"></i> Base64 Converter</h1>
+
+<div class="container">
+    <label for="inputText">Enter your text:</label>
+    <textarea id="inputText" placeholder="Paste or write long text here..."></textarea>
+    <button onclick="encodeBase64()">Encode → Base64</button>
+
+    <label for="encodedText">Base64 Output:</label>
+    <div id="encodedText" class="output"></div>
+    <button onclick="decodeBase64()">Decode → Original Text</button>
+
+    <label for="decodedText">Decoded Text:</label>
+    <div id="decodedText" class="output"></div>
+</div>
+
+<script>
+// UTF-8 safe Base64 encode
+function utf8ToBase64(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+}
+
+// UTF-8 safe Base64 decode
+function base64ToUtf8(base64) {
+    return decodeURIComponent(escape(atob(base64)));
+}
+
+// Encode button
+function encodeBase64() {
+    const text = document.getElementById('inputText').value;
+    if(!text) return alert("Input text is empty!");
+    const encoded = utf8ToBase64(text);
+    document.getElementById('encodedText').textContent = encoded;
+    document.getElementById('decodedText').textContent = '';
+}
+
+// Decode button
+function decodeBase64() {
+    const encoded = document.getElementById('encodedText').textContent;
+    if(!encoded) return alert("Base64 output is empty!");
+    try {
+        const decoded = base64ToUtf8(encoded);
+        document.getElementById('decodedText').textContent = decoded;
+    } catch(e) {
+        alert("Invalid Base64!");
+    }
+}
+</script>
+
+</body>
+</html>
